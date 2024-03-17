@@ -20,15 +20,41 @@ body {
     color: #EEEEEE;
     font-family: "Biryani", sans-serif;
     font-weight: 200;
+    font-size: 24px;
     margin: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+}
+
+div {
+    color: rgba(238, 238, 238, 0.5);
+}
+
+article {
+    text-align: center;
+}
+
+a {
+    transition: text-decoration-color ease-out 0.3s;
+    text-decoration-color: transparent;
+    color: rgba(255, 210, 105, 0.5);
+}
+
+a:hover {
+    text-decoration-color: rgba(255, 210, 105, 0.5);
 }
 
 h1 {
     font-family: "Rubik Doodle Shadow", system-ui;
+    font-size: 32px;
     letter-spacing: 10px;
     color: #FFD369;
+}
+
+footer {
+    color: rgba(238, 238, 238, 0.5);
+    font-size: 16px;
+    margin: 24px;
 }
