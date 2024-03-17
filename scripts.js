@@ -1,0 +1,1 @@
+console.log('Internal JS file linked');

@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Biryani:wght@200;300;400;600;700;800;900&family=Lexend+Exa:wght@100..900&family=Rubik+Doodle+Shadow&display=swap');
+
+.COLOR-PALETTE {
+    color: #222831;
+    color: #393E46;
+    color: #FFD369;
+    color: #EEEEEE;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #222831;
+    color: #EEEEEE;
+    font-family: "Biryani", sans-serif;
+    font-weight: 200;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-family: "Rubik Doodle Shadow", system-ui;
+    letter-spacing: 10px;
+    color: #FFD369;
+}
