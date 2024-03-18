@@ -9,7 +9,7 @@ function getComputerChoice() {
 function getPlayerChoice(answer) {
     // Ask the user for the input (if none was in the function's argument)
     if (!answer) {
-        answer = prompt('Pick between water, plank and fire!', getRandomSuggestion());
+        answer = prompt('Pick between water, plank and fire!', getChoiceText());
     }
 
     // Still no answer? Force them to make one
@@ -44,9 +44,9 @@ function getPlayerChoice(answer) {
     }
 }
 
-// This is for getting a random sample text in a prompt window
-function getRandomSuggestion() {
-    switch (getComputerChoice()) {
+// This gets a sample text of a choice, it is random by default
+function getChoiceText(input = getComputerChoice()) {
+    switch (input) {
         case 0:
             return 'Water! 💧';
         case 1:
@@ -56,30 +56,43 @@ function getRandomSuggestion() {
     }
 }
 
+// TO-DO: AFRAID IT MAY HAVE BUGS? NOT ALL POSSIBLE GAMES WERE CHECKED
 // Play a single round: 0 = draw; 1 = 1p; 2 = 2p
 function playRound(firstChoice, secondChoice) {
-    // Check for draw
+    // Log choices
+    console.log(`First player picks ${getChoiceText(firstChoice).toLowerCase()}`);
+    console.log(`Second player picks ${getChoiceText(secondChoice).toLowerCase()}`);
+
+    // Check for draw (return + log it)
     if (firstChoice === secondChoice) {
+        console.log('It\'s a draw! 🤝');
         return 0;
     }
 
     // It's important to know which number is larger to determine the winner of the combination
     let firstLarger = firstChoice > secondChoice ? true : false;
+    // Check the winner (return + log it)
     switch (firstChoice + secondChoice) {
         case 1:
             if (firstLarger) {
+                console.log('First player wins! ✊');
                 return 1;
             }
+            console.log('Second player wins! ✊');
             return 2;
         case 2:
             if (firstLarger) {
+                console.log('Second player wins! ✊');
                 return 2;
             }
+            console.log('First player wins! ✊');
             return 1;
         case 3:
             if (firstLarger) {
+                console.log('First player wins! ✊');
                 return 1;
             }
+            console.log('Second player wins! ✊');
             return 2;
     }
 }
