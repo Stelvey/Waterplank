@@ -9,7 +9,7 @@ function getComputerChoice() {
 function getPlayerChoice(answer) {
     // Ask the user for the input (if none was in the function's argument)
     if (!answer) {
-        answer = prompt('Pick between water, plank and fire!', 'Fire!');
+        answer = prompt('Pick between water, plank and fire!', getRandomSuggestion());
     }
 
     // Still no answer? Force them to make one
@@ -44,6 +44,18 @@ function getPlayerChoice(answer) {
     }
 }
 
+// This is for getting a random sample text in a prompt window
+function getRandomSuggestion() {
+    switch (getComputerChoice()) {
+        case 0:
+            return 'Water! 💧';
+        case 1:
+            return 'Plank! 🪵';
+        case 2:
+            return 'Fire! 🔥';
+    }
+}
+
 // Play a single round: 0 = draw; 1 = 1p; 2 = 2p
 function playRound(firstChoice, secondChoice) {
     // Check for draw
@@ -71,3 +83,9 @@ function playRound(firstChoice, secondChoice) {
             return 2;
     }
 }
+
+// function playGame(boValue = 5) {
+//     for (let i = 0; i < boValue; i++) {
+        
+//     }
+// }
