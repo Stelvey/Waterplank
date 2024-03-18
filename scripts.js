@@ -2,7 +2,7 @@
 
 // Get computer's choice
 function getComputerChoice() {
-    return Math.floor(Math.random() * 4);
+    return Math.floor(Math.random() * 3);
 }
 
 // Get player's choice: words, emojis (any style: punctuation and/or -case)
