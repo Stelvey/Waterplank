@@ -12,12 +12,6 @@ function getPlayerChoice(answer) {
         answer = prompt('Pick between water, plank and fire!', getChoiceText());
     }
 
-    // Still no answer? Force them to make one
-    if (!answer) {
-        alert('Please, make a choice 🙏🏻');
-        return getPlayerChoice();
-    }
-
     // Retrieve booleans through regex to know which words exist in the answer
     let water = /(water)|[💦🔫🌊💧]/imu;
     let plank = /(plank)|🪵/imu;
@@ -26,6 +20,12 @@ function getPlayerChoice(answer) {
     water = water.test(answer);
     plank = plank.test(answer);
     fire = fire.test(answer);
+
+    // Still no answer? Force them to make one
+    if (!(water || plank || fire)) {
+        alert('Please, make a choice 🙏🏻');
+        return getPlayerChoice();
+    }
 
     // Retrieve a choice indefinitely only until the user inputs 1 choice only
     if (water + plank + fire > 1) {
