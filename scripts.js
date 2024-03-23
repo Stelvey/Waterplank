@@ -1,4 +1,6 @@
 // 0 = R; 1 = P; 2 = S (functions that retrieve choices always return one of these numbers!)
+console.info('%cYou can start the game by entering playGame() in the console. You can optionally specify the number of rounds to play in the parentheses',
+'background-color: rgba(255, 210, 105, 0.2); padding: 10px; text-align: center; border-radius: 5px;');
 
 // Get computer's choice
 function getComputerChoice() {
@@ -6,10 +8,11 @@ function getComputerChoice() {
 }
 
 // Get player's choice: words, emojis (any style: punctuation and/or -case)
-function getPlayerChoice(answer) {
-    // Ask the user for the input (if none was in the function's argument)
+function getPlayerChoice() {
+    // Get input and return null if there was absolutely no input whatsoever
+    answer = prompt('Pick between water, plank and fire!', getChoiceText());
     if (!answer) {
-        answer = prompt('Pick between water, plank and fire!', getChoiceText());
+        return null;
     }
 
     // Retrieve booleans through regex to know which words exist in the answer
@@ -56,12 +59,17 @@ function getChoiceText(input = getComputerChoice()) {
     }
 }
 
-// TO-DO: AFRAID IT MAY HAVE BUGS? NOT ALL POSSIBLE GAMES WERE CHECKED
 // Play a single round: 0 = draw; 1 = 1p; 2 = 2p
-function playRound(firstChoice, secondChoice) {
+function playRound(firstChoice = getPlayerChoice(), secondChoice = getComputerChoice()) {
+    // Cancel if no input at all (return null)
+    if (firstChoice === null || secondChoice === null) {
+        console.log('ROUND CANCELED BY USER! 🚫');
+        return null;
+    }
+
     // Log choices
-    console.log(`First player picks ${getChoiceText(firstChoice).toLowerCase()}`);
-    console.log(`Second player picks ${getChoiceText(secondChoice).toLowerCase()}`);
+    console.log(`%c${getChoiceText(firstChoice)} %cVS%c ${getChoiceText(secondChoice)}`,
+    'font-size: 16px;', 'font-size: 32px;', 'font-size: 16px;');
 
     // Check for draw (return + log it)
     if (firstChoice === secondChoice) {
@@ -78,11 +86,11 @@ function playRound(firstChoice, secondChoice) {
                 console.log('First player wins! ✊');
                 return 1;
             }
-            console.log('Second player wins! ✊');
+            console.log('Second player wins! 💪');
             return 2;
         case 2:
             if (firstLarger) {
-                console.log('Second player wins! ✊');
+                console.log('Second player wins! 💪');
                 return 2;
             }
             console.log('First player wins! ✊');
@@ -92,13 +100,67 @@ function playRound(firstChoice, secondChoice) {
                 console.log('First player wins! ✊');
                 return 1;
             }
-            console.log('Second player wins! ✊');
+            console.log('Second player wins! 💪');
             return 2;
     }
 }
 
-// function playGame(boValue = 5) {
-//     for (let i = 0; i < boValue; i++) {
-        
-//     }
-// }
+// Play a whole game and determine the outcome over multiple rounds
+function playGame(boValue = 5) {
+    // Declare the variables for scoring and shit
+    let firstScore = 0;
+    let secondScore = 0;
+    let drawAmount = 0;
+
+    let firstChoice;
+    let secondChoice;
+    for (let i = 0; i < boValue; i++) {
+        // Collect choices and cancel in case of empty inputs
+        firstChoice = getPlayerChoice();
+        secondChoice = getPlayerChoice();
+        if (firstChoice === null || secondChoice === null) {
+            console.log('GAME CANCELED BY USER! 🚫');
+            return null;
+        }
+
+        // Play a round and determine the outcome
+        console.group(`%cRound ${i + 1}!`,
+        'font-size: 16px;');
+        switch (playRound(firstChoice, secondChoice)) {
+            case 0:
+                drawAmount++;
+                console.log(`The score is %c${firstScore} VS ${secondScore}`,
+                'font-size: 16px;');
+                break;
+            case 1:
+                firstScore++;
+                console.log(`The score is now %c${firstScore} VS ${secondScore}`,
+                'font-size: 16px;');
+                break;
+            case 2:
+                secondScore++;
+                console.log(`The score is now %c${firstScore} VS ${secondScore}`,
+                'font-size: 16px;');
+        }
+        console.groupEnd();
+
+        // Check if anyone has won yet (TO-DO: This check is very suspicious! Test before publishing!)
+        if ((firstScore > (boValue - drawAmount) / 2) || (secondScore > (boValue - drawAmount) / 2)) {
+            break;
+        }
+    }
+    // Conclude who is the winner of the game! (return + log it)
+    if (firstScore > secondScore) {
+        console.log('%cFirst player has won the game! 🏅',
+        'font-size: 16px;');
+        return 1;
+    } else if (firstScore < secondScore) {
+        console.log('%cSecond player has won the game! 🏅',
+        'font-size: 16px;');
+        return 2;
+    } else {
+        console.log('%cIt is a draw! 🤜🤛',
+        'font-size: 16px;');
+        return 0;
+    }
+}
