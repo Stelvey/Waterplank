@@ -117,7 +117,7 @@ function playGame(boValue = 5) {
     for (let i = 0; i < boValue; i++) {
         // Collect choices and cancel in case of empty inputs
         firstChoice = getPlayerChoice();
-        secondChoice = getPlayerChoice();
+        secondChoice = getComputerChoice();
         if (firstChoice === null || secondChoice === null) {
             console.log('GAME CANCELED BY USER! 🚫');
             return null;
