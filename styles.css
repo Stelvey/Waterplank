@@ -22,6 +22,7 @@ body {
     font-family: "Biryani", sans-serif;
     font-weight: 200;
     font-size: 24px;
+    text-align: center;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -34,7 +35,10 @@ div {
 }
 
 article {
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 256px;
 }
 
 a {
@@ -58,4 +62,18 @@ footer {
     color: rgba(238, 238, 238, 0.5);
     font-size: 16px;
     margin: 24px;
+}
+
+ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    font-size: 64px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
 }
