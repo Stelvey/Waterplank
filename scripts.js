@@ -8,9 +8,11 @@ function getComputerChoice() {
 }
 
 // Get player's choice: words, emojis (any style: punctuation and/or -case)
-function getPlayerChoice() {
-    // Get input and return null if there was absolutely no input whatsoever
-    answer = prompt('Pick between water, plank and fire!', getChoiceText());
+function getPlayerChoice(answer) {
+    // Get input through prompt if none provided and return null if there was absolutely no input whatsoever
+    if (!answer) {
+        answer = prompt('Pick between water, plank and fire!', getChoiceText());
+    }
     if (!answer) {
         return null;
     }
@@ -164,3 +166,15 @@ function playGame(boValue = 5) {
         return 0;
     }
 }
+
+
+
+// DOM PART
+const playerBtns = document.querySelector('#playerChoice ul');
+const computerBtns = document.querySelector('#computerChoice ul');
+
+playerBtns.addEventListener('click', (e) => {
+    if (e.target.className) {
+        playRound(getPlayerChoice(e.target.className));
+    };
+});
