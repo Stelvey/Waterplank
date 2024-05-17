@@ -2,7 +2,7 @@
 console.info('%cYou can start the game by entering playGame() in the console. You can optionally specify the number of rounds to play in the parentheses',
 'background-color: rgba(255, 210, 105, 0.2); padding: 10px; text-align: center; border-radius: 5px;');
 
-// Get computer's choice
+// Get computer's choice (a random int from 0 to 2)
 function getComputerChoice() {
     return Math.floor(Math.random() * 3);
 }
@@ -174,7 +174,22 @@ const playerBtns = document.querySelector('#playerChoice ul');
 const computerBtns = document.querySelector('#computerChoice ul');
 
 playerBtns.addEventListener('click', (e) => {
+    // Do the function if the working button has been clicked
     if (e.target.className) {
-        playRound(getPlayerChoice(e.target.className));
+        // Unselect previous choices
+        for (listItem of playerBtns.children) {
+            listItem.firstElementChild.classList.remove('chosen');
+        }
+        for (listItem of computerBtns.children) {
+            listItem.firstElementChild.classList.remove('chosen');
+        }
+        
+        // Get computer's choice and select the corresponding button
+        const computerChoice = getComputerChoice();
+        computerBtns.children[computerChoice].firstElementChild.classList.add('chosen');
+
+        // Select the first player's button and play the round
+        e.target.classList.add('chosen');
+        playRound(getPlayerChoice(e.target.className), computerChoice);
     };
 });

@@ -87,6 +87,11 @@ button:active {
     border: 15px double #EEEEEE;
 }
 
+.chosen {
+    border: 15px double #EEEEEE;
+}
+
+/* Some mobile mess */
 @media (hover: hover) {
     button:hover {
         border: 9px solid #EEEEEE;
