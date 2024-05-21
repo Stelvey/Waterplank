@@ -170,26 +170,40 @@ function playGame(boValue = 5) {
 
 
 // DOM PART
-const playerBtns = document.querySelector('#playerChoice ul');
-const computerBtns = document.querySelector('#computerChoice ul');
+const playerBtns = document.querySelector('#playerChoice');
+const computerBtns = document.querySelector('#computerChoice');
 
 playerBtns.addEventListener('click', (e) => {
     // Do the function if the working button has been clicked
     if (e.target.className) {
         // Unselect previous choices
         for (listItem of playerBtns.children) {
-            listItem.firstElementChild.classList.remove('chosen');
+            const name = listItem.firstElementChild.classList[0];
+            listItem.firstElementChild.className = name;
         }
         for (listItem of computerBtns.children) {
-            listItem.firstElementChild.classList.remove('chosen');
+            const name = listItem.firstElementChild.classList[0];
+            listItem.firstElementChild.className = name;
         }
         
-        // Get computer's choice and select the corresponding button
+        // Get computer's choice
         const computerChoice = getComputerChoice();
-        computerBtns.children[computerChoice].firstElementChild.classList.add('chosen');
 
-        // Select the first player's button and play the round
-        e.target.classList.add('chosen');
-        playRound(getPlayerChoice(e.target.className), computerChoice);
+        // Select the first player's button and play the round, change buttons to corresponding colors
+        result = playRound(getPlayerChoice(e.target.className), computerChoice);
+
+        switch (result) {
+            case 0:
+                e.target.classList.add('draw');
+                computerBtns.children[computerChoice].firstElementChild.classList.add('draw');
+                break;
+            case 1:
+                e.target.classList.add('winner');
+                computerBtns.children[computerChoice].firstElementChild.classList.add('loser');
+                break;
+            case 2:
+                e.target.classList.add('loser');
+                computerBtns.children[computerChoice].firstElementChild.classList.add('winner');
+        }
     };
 });

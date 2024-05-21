@@ -72,6 +72,7 @@ ul {
     padding: 0;
 }
 
+/* Please, god have mercy on me for this fucking abomination */
 button {
     transition: border ease-out 0.1s;
     width: 150px;
@@ -87,8 +88,16 @@ button:active {
     border: 15px double #EEEEEE;
 }
 
-.chosen {
+.draw {
     border: 15px double #EEEEEE;
+}
+
+.winner {
+    border: 15px double green;
+}
+
+.loser {
+    border: 15px double red;
 }
 
 /* Some mobile mess */
@@ -97,8 +106,24 @@ button:active {
         border: 9px solid #EEEEEE;
     }
 
+    button:hover.winner {
+        border: 9px solid green;
+    }
+
+    button:hover.loser {
+        border: 9px solid red;
+    }
+
     button:active {
         border: 15px double #EEEEEE;
+    }
+
+    button:active.winner {
+        border: 15px double green;
+    }
+
+    button:active.loser {
+        border: 15px double red;
     }
 }
 
