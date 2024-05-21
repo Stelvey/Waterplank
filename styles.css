@@ -84,7 +84,7 @@ button {
     background-color: transparent;
 }
 
-button:active {
+#playerChoice button:active {
     border: 15px double #EEEEEE;
 }
 
@@ -102,27 +102,27 @@ button:active {
 
 /* Some mobile mess */
 @media (hover: hover) {
-    button:hover {
+    #playerChoice button:hover {
         border: 9px solid #EEEEEE;
     }
 
-    button:hover.winner {
+    #playerChoice button:hover.winner {
         border: 9px solid green;
     }
 
-    button:hover.loser {
+    #playerChoice button:hover.loser {
         border: 9px solid red;
     }
 
-    button:active {
+    #playerChoice button:active {
         border: 15px double #EEEEEE;
     }
 
-    button:active.winner {
+    #playerChoice button:active.winner {
         border: 15px double green;
     }
 
-    button:active.loser {
+    #playerChoice button:active.loser {
         border: 15px double red;
     }
 }
