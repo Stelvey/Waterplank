@@ -1,6 +1,16 @@
 // 0 = R; 1 = P; 2 = S (functions that retrieve choices always return one of these numbers!)
-console.info('%cYou can start the game by entering playGame() in the console. You can optionally specify the number of rounds to play in the parentheses',
+
+// The logic is based around additions like so:
+// 0 BEATS 2 = 2nd combination
+// 1 BEATS 0 = 1st combination
+// 2 BEATS 1 = 3rd combination
+
+console.info('%cYou can start the game by entering playGame() in the console. You will be playing until either player achieves the score of 3 on any of the elements',
 'background-color: rgba(255, 210, 105, 0.2); padding: 10px; text-align: center; border-radius: 5px;');
+
+// Globally declare the scoring variables
+let firstScore = [0, 0, 0];
+let secondScore = [0, 0, 0];
 
 // Get computer's choice (a random int from 0 to 2)
 function getComputerChoice() {
@@ -107,21 +117,19 @@ function playRound(firstChoice = getPlayerChoice(), secondChoice = getComputerCh
     }
 }
 
-// Play a whole game and determine the outcome over multiple rounds
-function playGame(boValue = 5) {
-    // Declare the variables for scoring and shit
-    let firstScore = 0;
-    let secondScore = 0;
-    let drawAmount = 0;
-
-    let firstChoice;
-    let secondChoice;
-    for (let i = 0; i < boValue; i++) {
+// Play rounds until someone wins
+function playGame() {
+    // Iteration counter
+    let i = 0;
+    while (!(Math.max(...firstScore) === 3 || Math.max(...secondScore) === 3)) {
         // Collect choices and cancel in case of empty inputs
-        firstChoice = getPlayerChoice();
-        secondChoice = getComputerChoice();
+        const firstChoice = getPlayerChoice();
+        const secondChoice = getComputerChoice();
         if (firstChoice === null || secondChoice === null) {
             console.log('GAME CANCELED BY USER! 🚫');
+            // Reset scores before canceling
+            firstScore = [0, 0, 0];
+            secondScore = [0, 0, 0];
             return null;
         }
 
@@ -130,40 +138,43 @@ function playGame(boValue = 5) {
         'font-size: 16px;');
         switch (playRound(firstChoice, secondChoice)) {
             case 0:
-                drawAmount++;
-                console.log(`The score is %c${firstScore} VS ${secondScore}`,
+                console.log(`%cYour scores:       💧 = ${firstScore[0]} | 🪵 = ${firstScore[1]} | 🔥 = ${firstScore[2]}`,
+                'font-size: 16px;');
+                console.log(`%cOpponent's scores: 💧 = ${secondScore[0]} | 🪵 = ${secondScore[1]} | 🔥 = ${secondScore[2]}`,
                 'font-size: 16px;');
                 break;
             case 1:
-                firstScore++;
-                console.log(`The score is now %c${firstScore} VS ${secondScore}`,
+                firstScore[firstChoice]++;
+                console.log(`%cYour scores:       💧 = ${firstScore[0]} | 🪵 = ${firstScore[1]} | 🔥 = ${firstScore[2]}`,
+                'font-size: 16px;');
+                console.log(`%cOpponent's scores: 💧 = ${secondScore[0]} | 🪵 = ${secondScore[1]} | 🔥 = ${secondScore[2]}`,
                 'font-size: 16px;');
                 break;
             case 2:
-                secondScore++;
-                console.log(`The score is now %c${firstScore} VS ${secondScore}`,
+                secondScore[secondChoice]++;
+                console.log(`%cYour scores:       💧 = ${firstScore[0]} | 🪵 = ${firstScore[1]} | 🔥 = ${firstScore[2]}`,
+                'font-size: 16px;');
+                console.log(`%cOpponent's scores: 💧 = ${secondScore[0]} | 🪵 = ${secondScore[1]} | 🔥 = ${secondScore[2]}`,
                 'font-size: 16px;');
         }
         console.groupEnd();
 
-        // Check if anyone has won yet (TO-DO: This check is very suspicious! Test before publishing!)
-        if ((firstScore > (boValue - drawAmount) / 2) || (secondScore > (boValue - drawAmount) / 2)) {
-            break;
-        }
+        // Update the iteration counter
+        i++;
     }
-    // Conclude who is the winner of the game! (return + log it)
-    if (firstScore > secondScore) {
+    // Conclude who is the winner of the game! (return + log it) & reset the scores
+    if (Math.max(...firstScore) === 3) {
         console.log('%cFirst player has won the game! 🏅',
         'font-size: 16px;');
+        firstScore = [0, 0, 0];
+        secondScore = [0, 0, 0];
         return 1;
-    } else if (firstScore < secondScore) {
+    } else {
         console.log('%cSecond player has won the game! 🏅',
         'font-size: 16px;');
+        firstScore = [0, 0, 0];
+        secondScore = [0, 0, 0];
         return 2;
-    } else {
-        console.log('%cIt is a draw! 🤜🤛',
-        'font-size: 16px;');
-        return 0;
     }
 }
 
