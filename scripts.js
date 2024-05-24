@@ -72,7 +72,7 @@ function getChoiceText(input = getComputerChoice()) {
     }
 }
 
-// Reset all scoring variables and visual representations
+// Reset the scoring variables and visual representations
 function resetScores() {
     for (listItem of playerBtns.children) {
         listItem.lastElementChild.textContent = '';
@@ -80,13 +80,15 @@ function resetScores() {
     for (listItem of computerBtns.children) {
         listItem.lastElementChild.textContent = '';
     }
-    round = 0;
     firstScore = [0, 0, 0];
     secondScore = [0, 0, 0];
 }
 
 // Update the counters and check if anyone has won (also log stuff and update GUI)
 function updateScores(result, firstChoice, secondChoice) {
+    // Reset the scores if this is a new game
+    if (round === 0) resetScores();
+
     switch (result) {
         case 0:
             console.log(`%cYour scores:       💧 = ${firstScore[0]} | 🪵 = ${firstScore[1]} | 🔥 = ${firstScore[2]}`,
@@ -116,16 +118,28 @@ function updateScores(result, firstChoice, secondChoice) {
     // Update the round counter
     round++;
 
-    // Conclude who is the winner of the game! (return + log it) & reset the scores
+    // Conclude who is the winner of the game! (return + log it + GUI) & reset the rounds counter
     if (Math.max(...firstScore) === 3) {
+        for (listItem of playerBtns.children) {
+            const name = listItem.firstElementChild.classList.add('winner');
+        }
+        for (listItem of computerBtns.children) {
+            const name = listItem.firstElementChild.classList.add('loser');
+        }
         console.log('%cFirst player has won the game! 🏅',
         'font-size: 16px;');
-        resetScores();
+        round = 0;
         return 1;
     } else if (Math.max(...secondScore) === 3) {
+        for (listItem of computerBtns.children) {
+            const name = listItem.firstElementChild.classList.add('winner');
+        }
+        for (listItem of playerBtns.children) {
+            const name = listItem.firstElementChild.classList.add('loser');
+        }
         console.log('%cSecond player has won the game! 🏅',
         'font-size: 16px;');
-        resetScores();
+        round = 0;
         return 2;
     }
     return result;
