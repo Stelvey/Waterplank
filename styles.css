@@ -30,8 +30,10 @@ body {
     align-items: center;
 }
 
-div {
-    color: rgba(238, 238, 238, 0.5);
+button + div {
+    height: 0px;
+    color: #FFD369;
+    font-size: 32px;
 }
 
 article {

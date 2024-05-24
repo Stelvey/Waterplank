@@ -72,7 +72,20 @@ function getChoiceText(input = getComputerChoice()) {
     }
 }
 
-// Update the counters and check if anyone has won (also log stuff)
+// Reset all scoring variables and visual representations
+function resetScores() {
+    for (listItem of playerBtns.children) {
+        listItem.lastElementChild.textContent = '';
+    }
+    for (listItem of computerBtns.children) {
+        listItem.lastElementChild.textContent = '';
+    }
+    round = 0;
+    firstScore = [0, 0, 0];
+    secondScore = [0, 0, 0];
+}
+
+// Update the counters and check if anyone has won (also log stuff and update GUI)
 function updateScores(result, firstChoice, secondChoice) {
     switch (result) {
         case 0:
@@ -83,6 +96,7 @@ function updateScores(result, firstChoice, secondChoice) {
             break;
         case 1:
             firstScore[firstChoice]++;
+            playerBtns.children[firstChoice].lastElementChild.textContent += '•';
             console.log(`%cYour scores:       💧 = ${firstScore[0]} | 🪵 = ${firstScore[1]} | 🔥 = ${firstScore[2]}`,
             'font-size: 16px;');
             console.log(`%cOpponent's scores: 💧 = ${secondScore[0]} | 🪵 = ${secondScore[1]} | 🔥 = ${secondScore[2]}`,
@@ -90,6 +104,7 @@ function updateScores(result, firstChoice, secondChoice) {
             break;
         case 2:
             secondScore[secondChoice]++;
+            computerBtns.children[secondChoice].lastElementChild.textContent += '•';
             console.log(`%cYour scores:       💧 = ${firstScore[0]} | 🪵 = ${firstScore[1]} | 🔥 = ${firstScore[2]}`,
             'font-size: 16px;');
             console.log(`%cOpponent's scores: 💧 = ${secondScore[0]} | 🪵 = ${secondScore[1]} | 🔥 = ${secondScore[2]}`,
@@ -105,18 +120,15 @@ function updateScores(result, firstChoice, secondChoice) {
     if (Math.max(...firstScore) === 3) {
         console.log('%cFirst player has won the game! 🏅',
         'font-size: 16px;');
-        round = 0;
-        firstScore = [0, 0, 0];
-        secondScore = [0, 0, 0];
+        resetScores();
         return 1;
     } else if (Math.max(...secondScore) === 3) {
         console.log('%cSecond player has won the game! 🏅',
         'font-size: 16px;');
-        round = 0;
-        firstScore = [0, 0, 0];
-        secondScore = [0, 0, 0];
+        resetScores();
         return 2;
     }
+    return result;
 }
 
 // Play a single round: 0 = draw; 1 = 1p; 2 = 2p
