@@ -5,6 +5,8 @@
 // 1 BEATS 0 = 1st combination
 // 2 BEATS 1 = 3rd combination
 
+// Confetti for the user! ^^
+const jsConfetti = new JSConfetti()
 console.info('%cYou can start the game by entering playGame() in the console. You will be playing until either player achieves the score of 3 on any of the elements',
 'background-color: rgba(255, 210, 105, 0.2); padding: 10px; text-align: center; border-radius: 5px;');
 
@@ -126,6 +128,10 @@ function updateScores(result, firstChoice, secondChoice) {
         for (listItem of computerBtns.children) {
             const name = listItem.firstElementChild.classList.add('loser');
         }
+
+        // Confetti for the user! ^^
+        jsConfetti.addConfetti();
+        
         console.log('%cFirst player has won the game! 🏅',
         'font-size: 16px;');
         round = 0;
