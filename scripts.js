@@ -22,6 +22,9 @@ function getComputerChoice() {
 
 // Get player's choice: words, emojis (any style: punctuation and/or -case)
 function getPlayerChoice(answer) {
+    // Reset the scores if this is a new game
+    if (round === 0) resetScores();
+
     // Get input through prompt if none provided and return null if there was absolutely no input whatsoever
     if (!answer) {
         answer = prompt('Pick between water, plank and fire!', getChoiceText());
@@ -88,9 +91,6 @@ function resetScores() {
 
 // Update the counters and check if anyone has won (also log stuff and update GUI)
 function updateScores(result, firstChoice, secondChoice) {
-    // Reset the scores if this is a new game
-    if (round === 0) resetScores();
-
     switch (result) {
         case 0:
             console.log(`%cYour scores:       💧 = ${firstScore[0]} | 🪵 = ${firstScore[1]} | 🔥 = ${firstScore[2]}`,
@@ -285,7 +285,7 @@ function joinSession(peerId) {
     });
 }
 
-// This is a weird one to explain
+// This is a weird one to explain (basically, sends real choices when both players are ready and initiates a round play)
 function compareWithEnemy(enemyChoice) {
     // Abandon if someone hasn't decided on their choice yet
     if (playerChoice === null || enemyChoice === null) {
@@ -309,11 +309,11 @@ function compareWithEnemy(enemyChoice) {
             computerBtns.children[enemyChoice].firstElementChild.classList.add('draw');
             break;
         case 1:
-            playerBtns.children[playerChoice].firstElementChild.classList.add('draw');
+            playerBtns.children[playerChoice].firstElementChild.classList.add('winner');
             computerBtns.children[enemyChoice].firstElementChild.classList.add('loser');
             break;
         case 2:
-            playerBtns.children[playerChoice].firstElementChild.classList.add('draw');
+            playerBtns.children[playerChoice].firstElementChild.classList.add('loser');
             computerBtns.children[enemyChoice].firstElementChild.classList.add('winner');
     }
 
