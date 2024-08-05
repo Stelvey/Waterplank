@@ -222,6 +222,9 @@ function playGame() {
 const playerBtns = document.querySelector('#playerChoice');
 const computerBtns = document.querySelector('#computerChoice');
 
+let playerChoice = null;
+let computerChoice = null;
+
 playerBtns.addEventListener('click', (e) => {
     // Do the function if the working button has been clicked
     if (e.target.className) {
@@ -234,25 +237,87 @@ playerBtns.addEventListener('click', (e) => {
             const name = listItem.firstElementChild.classList[0];
             listItem.firstElementChild.className = name;
         }
-        
-        // Get computer's choice
-        const computerChoice = getComputerChoice();
 
-        // Select the first player's button and play the round, change buttons to corresponding colors
-        result = playRound(getPlayerChoice(e.target.className), computerChoice);
+        // Get player's choice and let the enemy know you are ready!
+        playerChoice = getPlayerChoice(e.target.className);
+        console.log('Sending', 3);
+        connection.send(3);
 
-        switch (result) {
-            case 0:
-                e.target.classList.add('draw');
-                computerBtns.children[computerChoice].firstElementChild.classList.add('draw');
-                break;
-            case 1:
-                e.target.classList.add('winner');
-                computerBtns.children[computerChoice].firstElementChild.classList.add('loser');
-                break;
-            case 2:
-                e.target.classList.add('loser');
-                computerBtns.children[computerChoice].firstElementChild.classList.add('winner');
-        }
+
+        compareWithEnemy(computerChoice);
     };
 });
+
+
+
+// MP
+const peer = new Peer();
+let connection = {};
+
+// Get peer ID
+peer.on('open', function(id) {
+    console.log(`Your peer ID is ${id}`);
+});
+
+// Receive connection from a peer
+peer.on('connection', function(conn) {
+    console.log('A fellow peer has joined!');
+    connection = conn;
+    // Receive messages
+    connection.on('data', function(data) {
+        console.log('Received', data);
+        computerChoice = data;
+        compareWithEnemy(computerChoice);
+    })
+});
+
+// Establish connection to a peer
+function joinSession(peerId) {
+    connection = peer.connect(peerId);
+    connection.on('open', function() {
+        console.log('You have joined the peer!');
+        // Receive messages
+        connection.on('data', function(data) {
+            console.log('Received', data);
+            computerChoice = data;
+            compareWithEnemy(computerChoice);
+        });
+    });
+}
+
+// This is a weird one to explain
+function compareWithEnemy(enemyChoice) {
+    // Abandon if someone hasn't decided on their choice yet
+    if (playerChoice === null || enemyChoice === null) {
+        console.log('Someone has not made a move yet! Waiting for everyone...');
+        return;
+    };
+
+    // Everyone is ready, time to send actual choice(s)
+    if (enemyChoice === 3) {
+        connection.send(playerChoice);
+        return;
+    }
+
+    // Select the first player's button and play the round, change buttons to corresponding colors
+    console.log('We have all the choices, time to play!');
+    result = playRound(playerChoice, enemyChoice);
+
+    switch (result) {
+        case 0:
+            playerBtns.children[playerChoice].firstElementChild.classList.add('draw');
+            computerBtns.children[enemyChoice].firstElementChild.classList.add('draw');
+            break;
+        case 1:
+            playerBtns.children[playerChoice].firstElementChild.classList.add('draw');
+            computerBtns.children[enemyChoice].firstElementChild.classList.add('loser');
+            break;
+        case 2:
+            playerBtns.children[playerChoice].firstElementChild.classList.add('draw');
+            computerBtns.children[enemyChoice].firstElementChild.classList.add('winner');
+    }
+
+    console.log('Clearing the choices for the next round!');
+    playerChoice = null;
+    computerChoice = null;
+}
