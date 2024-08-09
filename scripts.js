@@ -216,6 +216,13 @@ function playGame() {
     return 1;
 }
 
+// Disable or enable all buttons
+function enableBtns(btnsUl, state = true) {
+    for (listItem of btnsUl.children) {
+        listItem.firstElementChild.disabled = !state; 
+    }
+}
+
 
 
 // DOM PART
@@ -232,14 +239,22 @@ playerBtns.addEventListener('click', (e) => {
         for (listItem of playerBtns.children) {
             const name = listItem.firstElementChild.classList[0];
             listItem.firstElementChild.className = name;
+
+            // Disable the buttons for the time being
+            listItem.firstElementChild.disabled = true;
         }
         for (listItem of computerBtns.children) {
             const name = listItem.firstElementChild.classList[0];
             listItem.firstElementChild.className = name;
         }
 
-        // Get player's choice and let the enemy know you are ready!
+        // Get player's choice
         playerChoice = getPlayerChoice(e.target.className);
+
+        // Keep the choice highlighted
+        e.target.classList.add('draw');
+
+        // Let the enemy know you are ready!
         console.log('Sending', 3);
         connection.send(3);
 
@@ -320,4 +335,7 @@ function compareWithEnemy(enemyChoice) {
     console.log('Clearing the choices for the next round!');
     playerChoice = null;
     computerChoice = null;
+
+    // Also re-enable buttons
+    enableBtns(playerBtns);
 }

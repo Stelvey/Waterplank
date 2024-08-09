@@ -102,29 +102,29 @@ button {
     border: 15px double red;
 }
 
-/* Some mobile mess */
+/* Some mobile (not only) mess */
 @media (hover: hover) {
-    #playerChoice button:hover {
+    #playerChoice button:hover:enabled {
         border: 9px solid #EEEEEE;
     }
 
-    #playerChoice button:hover.winner {
+    #playerChoice button:hover:enabled.winner {
         border: 9px solid green;
     }
 
-    #playerChoice button:hover.loser {
+    #playerChoice button:hover:enabled.loser {
         border: 9px solid red;
     }
 
-    #playerChoice button:active {
+    #playerChoice button:active:enabled {
         border: 15px double #EEEEEE;
     }
 
-    #playerChoice button:active.winner {
+    #playerChoice button:active:enabled.winner {
         border: 15px double green;
     }
 
-    #playerChoice button:active.loser {
+    #playerChoice button:active:enabled.loser {
         border: 15px double red;
     }
 }
