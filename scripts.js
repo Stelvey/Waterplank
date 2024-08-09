@@ -254,10 +254,15 @@ playerBtns.addEventListener('click', (e) => {
         // Keep the choice highlighted
         e.target.classList.add('draw');
 
-        // Let the enemy know you are ready!
-        console.log('Sending', 3);
-        connection.send(3);
-
+        // Revert to CPU play when there is no connection
+        if (Object.keys(connection).length === 0) {
+            console.log('Generating CPU choice');
+            computerChoice = getComputerChoice();
+        } else {
+            // Otherwise, let the enemy know you are ready!
+            console.log('Sending', 3);
+            connection.send(3);
+        }
 
         compareWithEnemy(computerChoice);
     };
