@@ -226,6 +226,9 @@ function enableBtns(btnsUl, state = true) {
 
 
 // DOM PART
+const copyDiv = document.querySelector('#copy');
+const pasteDiv = document.querySelector('#paste');
+
 const playerBtns = document.querySelector('#playerChoice');
 const computerBtns = document.querySelector('#computerChoice');
 
@@ -235,7 +238,7 @@ let computerChoice = null;
 playerBtns.addEventListener('click', (e) => {
     // Do the function if the working button has been clicked
     if (e.target.className) {
-        // Unselect previous choices
+        // Unselect/clear previous choices
         for (listItem of playerBtns.children) {
             const name = listItem.firstElementChild.classList[0];
             listItem.firstElementChild.className = name;
@@ -274,13 +277,35 @@ playerBtns.addEventListener('click', (e) => {
 const peer = new Peer();
 let connection = {};
 
-// Get peer ID
+pasteDiv.firstElementChild.addEventListener('click', (e) => {
+    navigator.clipboard.readText().then((clipText) => {
+        if (clipText === peer.id) {
+            pasteDiv.firstElementChild.textContent = 'BRUH';
+        } else {
+            joinSession(clipText);
+        }
+    });
+});
+
+copyDiv.firstElementChild.addEventListener('mouseout', (e) => {
+    e.target.textContent = 'Copy ID';
+});
+
+// Get peer ID and show it to the user
 peer.on('open', function(id) {
+    copyDiv.firstElementChild.addEventListener('click', (e) => {
+        navigator.clipboard.writeText(id);
+        e.target.textContent = 'Copied!';
+    })
     console.log(`Your peer ID is ${id}`);
 });
 
 // Receive connection from a peer
 peer.on('connection', function(conn) {
+    resetScores();
+    pasteDiv.firstElementChild.textContent = 'Connected!';
+    pasteDiv.firstElementChild.classList.add('connected');
+    pasteDiv.firstElementChild.disabled = true;
     console.log('A fellow peer has joined!');
     connection = conn;
     // Receive messages
@@ -289,18 +314,36 @@ peer.on('connection', function(conn) {
         computerChoice = data;
         compareWithEnemy(computerChoice);
     })
+
+    // Visibly close the connection
+    connection.on('close', function() {
+        pasteDiv.firstElementChild.textContent = 'Paste ID';
+        pasteDiv.firstElementChild.className = '';
+        pasteDiv.firstElementChild.disabled = false;
+    });
 });
 
 // Establish connection to a peer
 function joinSession(peerId) {
     connection = peer.connect(peerId);
     connection.on('open', function() {
+        resetScores();
+        pasteDiv.firstElementChild.textContent = 'Connected!';
+        pasteDiv.firstElementChild.classList.add('connected');
+        pasteDiv.firstElementChild.disabled = true;
         console.log('You have joined the peer!');
         // Receive messages
         connection.on('data', function(data) {
             console.log('Received', data);
             computerChoice = data;
             compareWithEnemy(computerChoice);
+        });
+
+        // Visibly close the connection
+        connection.on('close', function() {
+            pasteDiv.firstElementChild.textContent = 'Paste ID';
+            pasteDiv.firstElementChild.className = '';
+            pasteDiv.firstElementChild.disabled = false;
         });
     });
 }
