@@ -315,8 +315,9 @@ peer.on('connection', function(conn) {
         compareWithEnemy(computerChoice);
     })
 
-    // Visibly close the connection
+    // Visibly close the connection and empty the variable
     connection.on('close', function() {
+        connection = {};
         pasteDiv.firstElementChild.textContent = 'Paste ID';
         pasteDiv.firstElementChild.className = '';
         pasteDiv.firstElementChild.disabled = false;
@@ -339,8 +340,9 @@ function joinSession(peerId) {
             compareWithEnemy(computerChoice);
         });
 
-        // Visibly close the connection
+        // Visibly close the connection and empty the variable
         connection.on('close', function() {
+            connection = {};
             pasteDiv.firstElementChild.textContent = 'Paste ID';
             pasteDiv.firstElementChild.className = '';
             pasteDiv.firstElementChild.disabled = false;
