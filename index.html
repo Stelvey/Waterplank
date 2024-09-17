@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Waterplank 🔥</title>
+    <link rel="stylesheet" href="achievement.css">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
     <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+    <script src="achievement.js" defer></script>
     <script src="scripts.js" defer></script>
 </head>
 <body>
@@ -56,7 +58,53 @@
         </div>
     </article>
     <footer>
-        Made by <a href=https://github.com/Stelvey>Stelvey</a>
+        <div class="counterweight">
+
+        </div>
+        <div>
+            Made by <a href=https://github.com/Stelvey>Stelvey</a>
+        </div>
+        <div class="help">
+            <button tabindex="0" class="tooltip">?
+                <div class="tooltiptext">You are on the left side and your opponent is on the right. Your wins are counted for the weapon you used. You win the whole game once you defeat your opponent thrice with the same weapon</div>
+            </button>
+        </div>
     </footer>
+
+    <!-- https://codepen.io/uenify/pen/KxzKVd -->
+    <div class="achievement">
+        <div class="animation">
+            <div class="circle">
+                <div class="img trophy_animate trophy_img">
+                    <img class="trophy_1" src="https://dl.dropboxusercontent.com/s/k0n14tzcl4q61le/trophy_full.svg"/>
+                    <img class="trophy_2" src="https://dl.dropboxusercontent.com/s/cd4k1h6w1c8an9j/trophy_no_handles.svg"/>
+                </div>
+                <div class="img xbox_img">
+                    <img src="https://dl.dropboxusercontent.com/s/uopiulb5yeo1twm/xbox.svg?dl=0"/>
+                </div>
+                <div class="brilliant-wrap">
+                    <div class="brilliant">
+                    </div>
+                </div>
+            </div>
+            <div class="banner-outer">
+                <div class="banner">
+                    <div class="achieve_disp">
+                        <span class="unlocked">
+                          
+                        </span>
+                        <div class="score_disp">
+                            <div class="gamerscore">
+                                <img width="20px" src="https://dl.dropboxusercontent.com/s/gdqf5amvjkx9rfb/G.svg?dl=0"/>
+                                <span class="acheive_score"></span>
+                            </div>
+                            <span class="hyphen_sep">-</span>
+                            <span class="achiev_name"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

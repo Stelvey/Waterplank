@@ -280,7 +280,7 @@ let connection = {};
 pasteDiv.firstElementChild.addEventListener('click', (e) => {
     navigator.clipboard.readText().then((clipText) => {
         if (clipText === peer.id) {
-            pasteDiv.firstElementChild.textContent = 'BRUH';
+            achievement();
         } else {
             joinSession(clipText);
         }
