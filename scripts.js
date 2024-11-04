@@ -22,8 +22,8 @@ function getComputerChoice() {
 
 // Get player's choice: words, emojis (any style: punctuation and/or -case)
 function getPlayerChoice(answer) {
-    // Reset the scores if this is a new game
-    if (round === 0) resetScores();
+    // Reset the UI for the brand new game
+    if (round === 0) resetCounterDots();
 
     // Get input through prompt if none provided and return null if there was absolutely no input whatsoever
     if (!answer) {
@@ -79,14 +79,18 @@ function getChoiceText(input = getComputerChoice()) {
 
 // Reset the scoring variables and visual representations
 function resetScores() {
+    firstScore = [0, 0, 0];
+    secondScore = [0, 0, 0];
+    round = 0;
+}
+
+function resetCounterDots() {
     for (listItem of playerBtns.children) {
         listItem.lastElementChild.textContent = '';
     }
     for (listItem of computerBtns.children) {
         listItem.lastElementChild.textContent = '';
     }
-    firstScore = [0, 0, 0];
-    secondScore = [0, 0, 0];
 }
 
 // Update the counters and check if anyone has won (also log stuff and update GUI)
@@ -134,7 +138,7 @@ function updateScores(result, firstChoice, secondChoice) {
         
         console.log('%cFirst player has won the game! 🏅',
         'font-size: 16px;');
-        round = 0;
+        resetScores();
         return 1;
     } else if (Math.max(...secondScore) === 3) {
         for (listItem of computerBtns.children) {
@@ -145,7 +149,7 @@ function updateScores(result, firstChoice, secondChoice) {
         }
         console.log('%cSecond player has won the game! 🏅',
         'font-size: 16px;');
-        round = 0;
+        resetScores();
         return 2;
     }
     return result;
@@ -259,12 +263,17 @@ playerBtns.addEventListener('click', (e) => {
 
         // Revert to CPU play when there is no connection
         if (Object.keys(connection).length === 0) {
-            console.log('Generating CPU choice');
+            // console.log('Generating CPU choice');
             computerChoice = getComputerChoice();
         } else {
             // Otherwise, let the enemy know you are ready!
-            console.log('Sending', 3);
-            connection.send(3);
+            // console.log('Letting the enemy know you are ready (3)');
+            connection.send({
+                playerChoice: 3,
+                firstScore: firstScore,
+                secondScore: secondScore,
+                round: round
+            });
         }
 
         compareWithEnemy(computerChoice);
@@ -280,7 +289,7 @@ let connection = {};
 pasteDiv.firstElementChild.addEventListener('click', (e) => {
     navigator.clipboard.readText().then((clipText) => {
         if (clipText === peer.id) {
-            achievement();
+            achievement('Connect to yourself', 42);
         } else {
             joinSession(clipText);
         }
@@ -310,8 +319,13 @@ peer.on('connection', function(conn) {
     connection = conn;
     // Receive messages
     connection.on('data', function(data) {
-        console.log('Received', data);
-        computerChoice = data;
+        // console.log('Received', data);
+
+        dataSyncCheck(data);
+
+        // Get the opponent's choice and compare if everyone's ready
+        computerChoice = data.playerChoice;
+        // console.log('RECEIVED THE CHOICE', computerChoice);
         compareWithEnemy(computerChoice);
     })
 
@@ -335,8 +349,13 @@ function joinSession(peerId) {
         console.log('You have joined the peer!');
         // Receive messages
         connection.on('data', function(data) {
-            console.log('Received', data);
-            computerChoice = data;
+            // console.log('Received', data);
+
+            dataSyncCheck(data);
+
+            // Get the opponent's choice and compare if everyone's ready
+            computerChoice = data.playerChoice;
+            // console.log('RECEIVED THE CHOICE', computerChoice);
             compareWithEnemy(computerChoice);
         });
 
@@ -352,20 +371,28 @@ function joinSession(peerId) {
 
 // This is a weird one to explain (basically, sends real choices when both players are ready and initiates a round play)
 function compareWithEnemy(enemyChoice) {
+    // console.log('WE ARE COMPARING WITH THE ENEMY', enemyChoice);
+
     // Abandon if someone hasn't decided on their choice yet
     if (playerChoice === null || enemyChoice === null) {
-        console.log('Someone has not made a move yet! Waiting for everyone...');
+        // console.log('Someone has not made a move yet! Waiting for everyone...');
         return;
     };
 
     // Everyone is ready, time to send actual choice(s)
     if (enemyChoice === 3) {
-        connection.send(playerChoice);
+        // console.log('Trying to send data to the opponent!!!')
+        connection.send({
+            playerChoice: playerChoice,
+            firstScore: firstScore,
+            secondScore: secondScore,
+            round: round
+        });
         return;
     }
 
     // Select the first player's button and play the round, change buttons to corresponding colors
-    console.log('We have all the choices, time to play!');
+    // console.log('We have all the choices, time to play!');
     result = playRound(playerChoice, enemyChoice);
 
     switch (result) {
@@ -382,10 +409,33 @@ function compareWithEnemy(enemyChoice) {
             computerBtns.children[enemyChoice].firstElementChild.classList.add('winner');
     }
 
-    console.log('Clearing the choices for the next round!');
+    // console.log('Clearing the choices for the next round!');
     playerChoice = null;
     computerChoice = null;
 
     // Also re-enable buttons
     enableBtns(playerBtns);
+}
+
+// Ugly sync issues detection
+function dataSyncCheck(data) {
+    // Stringify all the data
+    localDataString = JSON.stringify({
+        firstScore: firstScore,
+        secondScore: secondScore,
+        round: round
+    });
+    peerDataString = JSON.stringify({
+        firstScore: data.secondScore,
+        secondScore: data.firstScore,
+        round: data.round
+    });
+
+    // And then compare
+    if (localDataString !== peerDataString) {
+        achievement('I sense a cheater...', 0);
+        // console.log('DESYNC ISSUE! POSSIBLE CHEATING!');
+        const logo = document.querySelector('#fire');
+        logo.textContent = '🤡';
+    }
 }

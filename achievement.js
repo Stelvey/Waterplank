@@ -2,9 +2,9 @@
 
 let achievementSound = new Audio('https://dl.dropboxusercontent.com/s/8qvrpd69ua7wio8/XboxAchievement.mp3')
 let achievementSoundRare = new Audio('https://dl.dropboxusercontent.com/s/po1udpov43am81i/XboxOneRareAchievement.mp3')
-const achievement = () => {
-    let title = 'Connect to yourself'
-    let score = '42'
+const achievement = (text, gp) => {
+    let title = text
+    let score = gp
     let rare = false
     document.querySelector('.achiev_name').innerText = title
     document.querySelector('.acheive_score').innerText = score
@@ -25,7 +25,11 @@ const achievement = () => {
         document.querySelector('.banner').classList.remove('banner-animate')
         document.querySelector('.achieve_disp').classList.remove('achieve_disp_animate')
         document.getElementById("paste").firstElementChild.disabled = false
-    document.getElementById("paste").firstElementChild.textContent = 'Paste ID'
+        if (gp === 42) {
+            document.getElementById("paste").firstElementChild.textContent = 'Paste ID'
+        } else {
+            document.getElementById("paste").firstElementChild.textContent = 'Connected!'
+        }
         if (rare) {
             document.querySelector('.achievement').classList.remove('rare')
         }
