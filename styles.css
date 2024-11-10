@@ -14,7 +14,8 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -33,7 +34,7 @@ body {
 }
 
 /* Dots under buttons */
-button + div {
+button+div {
     height: 0px;
     color: #FFD369;
     font-size: 32px;
@@ -116,7 +117,8 @@ button {
     background-color: transparent;
 }
 
-.tooltip, .counterweight {
+.tooltip,
+.counterweight {
     width: 50px;
     height: 50px;
 }
@@ -131,7 +133,9 @@ button {
 }
 
 .tooltiptext {
+    transition: opacity ease-out 0.3s;
     visibility: hidden;
+    opacity: 0;
     position: absolute;
     width: 300px;
     bottom: 100px;
@@ -148,7 +152,10 @@ button {
     margin-left: 18px;
 }
 
-.water, .plank, .fire, #fire {
+.water,
+.plank,
+.fire,
+#fire {
     font-family: "Noto Color Emoji", sans-serif;
 }
 
@@ -157,7 +164,6 @@ button {
 }
 
 .connected {
-    /* color: rgb(192, 256, 192); */
     background-color: green;
     border: 3px solid green;
 }
@@ -214,6 +220,7 @@ button {
 
     .tooltip:hover:enabled .tooltiptext {
         visibility: visible;
+        opacity: 1;
     }
 }
 
@@ -238,7 +245,8 @@ button {
         gap: 16px;
     }
 
-    #copy, #paste {
+    #copy,
+    #paste {
         order: 1;
     }
 
@@ -248,5 +256,6 @@ button {
 
     .tooltip:focus .tooltiptext {
         visibility: visible;
+        opacity: 1;
     }
 }

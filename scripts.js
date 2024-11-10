@@ -8,7 +8,7 @@
 // Confetti for the user! ^^
 const jsConfetti = new JSConfetti()
 console.info('%cYou can start the game by entering playGame() in the console. You will be playing until either player achieves the score of 3 on any of the elements',
-'background-color: rgba(255, 210, 105, 0.2); padding: 10px; text-align: center; border-radius: 5px;');
+    'background-color: rgba(255, 210, 105, 0.2); padding: 10px; text-align: center; border-radius: 5px;');
 
 // Globally declare the scoring variables
 let round = 0;
@@ -98,25 +98,25 @@ function updateScores(result, firstChoice, secondChoice) {
     switch (result) {
         case 0:
             console.log(`%cYour scores:       💧 = ${firstScore[0]} | 🪵 = ${firstScore[1]} | 🔥 = ${firstScore[2]}`,
-            'font-size: 16px;');
+                'font-size: 16px;');
             console.log(`%cOpponent's scores: 💧 = ${secondScore[0]} | 🪵 = ${secondScore[1]} | 🔥 = ${secondScore[2]}`,
-            'font-size: 16px;');
+                'font-size: 16px;');
             break;
         case 1:
             firstScore[firstChoice]++;
             playerBtns.children[firstChoice].lastElementChild.textContent += '•';
             console.log(`%cYour scores:       💧 = ${firstScore[0]} | 🪵 = ${firstScore[1]} | 🔥 = ${firstScore[2]}`,
-            'font-size: 16px;');
+                'font-size: 16px;');
             console.log(`%cOpponent's scores: 💧 = ${secondScore[0]} | 🪵 = ${secondScore[1]} | 🔥 = ${secondScore[2]}`,
-            'font-size: 16px;');
+                'font-size: 16px;');
             break;
         case 2:
             secondScore[secondChoice]++;
             computerBtns.children[secondChoice].lastElementChild.textContent += '•';
             console.log(`%cYour scores:       💧 = ${firstScore[0]} | 🪵 = ${firstScore[1]} | 🔥 = ${firstScore[2]}`,
-            'font-size: 16px;');
+                'font-size: 16px;');
             console.log(`%cOpponent's scores: 💧 = ${secondScore[0]} | 🪵 = ${secondScore[1]} | 🔥 = ${secondScore[2]}`,
-            'font-size: 16px;');
+                'font-size: 16px;');
     }
     // End current round logging group
     console.groupEnd();
@@ -135,9 +135,9 @@ function updateScores(result, firstChoice, secondChoice) {
 
         // Confetti for the user! ^^
         jsConfetti.addConfetti();
-        
+
         console.log('%cFirst player has won the game! 🏅',
-        'font-size: 16px;');
+            'font-size: 16px;');
         resetScores();
         return 1;
     } else if (Math.max(...secondScore) === 3) {
@@ -148,7 +148,7 @@ function updateScores(result, firstChoice, secondChoice) {
             const name = listItem.firstElementChild.classList.add('loser');
         }
         console.log('%cSecond player has won the game! 🏅',
-        'font-size: 16px;');
+            'font-size: 16px;');
         resetScores();
         return 2;
     }
@@ -165,9 +165,9 @@ function playRound(firstChoice = getPlayerChoice(), secondChoice = getComputerCh
 
     // Start round logging group + log choices
     console.group(`%cRound ${round + 1}!`,
-    'font-size: 16px;');
+        'font-size: 16px;');
     console.log(`%c${getChoiceText(firstChoice)} %cVS%c ${getChoiceText(secondChoice)}`,
-    'font-size: 16px;', 'font-size: 32px;', 'font-size: 16px;');
+        'font-size: 16px;', 'font-size: 32px;', 'font-size: 16px;');
 
     // Check for draw (update scores + log it)
     if (firstChoice === secondChoice) {
@@ -223,7 +223,7 @@ function playGame() {
 // Disable or enable all buttons
 function enableBtns(btnsUl, state = true) {
     for (listItem of btnsUl.children) {
-        listItem.firstElementChild.disabled = !state; 
+        listItem.firstElementChild.disabled = !state;
     }
 }
 
@@ -301,7 +301,7 @@ copyDiv.firstElementChild.addEventListener('mouseout', (e) => {
 });
 
 // Get peer ID and show it to the user
-peer.on('open', function(id) {
+peer.on('open', function (id) {
     copyDiv.firstElementChild.addEventListener('click', (e) => {
         navigator.clipboard.writeText(id);
         e.target.textContent = 'Copied!';
@@ -310,7 +310,7 @@ peer.on('open', function(id) {
 });
 
 // Receive connection from a peer
-peer.on('connection', function(conn) {
+peer.on('connection', function (conn) {
     resetScores();
     pasteDiv.firstElementChild.textContent = 'Connected!';
     pasteDiv.firstElementChild.classList.add('connected');
@@ -318,7 +318,7 @@ peer.on('connection', function(conn) {
     console.log('A fellow peer has joined!');
     connection = conn;
     // Receive messages
-    connection.on('data', function(data) {
+    connection.on('data', function (data) {
         // console.log('Received', data);
 
         dataSyncCheck(data);
@@ -330,7 +330,7 @@ peer.on('connection', function(conn) {
     })
 
     // Visibly close the connection and empty the variable
-    connection.on('close', function() {
+    connection.on('close', function () {
         connection = {};
         pasteDiv.firstElementChild.textContent = 'Paste ID';
         pasteDiv.firstElementChild.className = '';
@@ -341,14 +341,14 @@ peer.on('connection', function(conn) {
 // Establish connection to a peer
 function joinSession(peerId) {
     connection = peer.connect(peerId);
-    connection.on('open', function() {
+    connection.on('open', function () {
         resetScores();
         pasteDiv.firstElementChild.textContent = 'Connected!';
         pasteDiv.firstElementChild.classList.add('connected');
         pasteDiv.firstElementChild.disabled = true;
         console.log('You have joined the peer!');
         // Receive messages
-        connection.on('data', function(data) {
+        connection.on('data', function (data) {
             // console.log('Received', data);
 
             dataSyncCheck(data);
@@ -360,7 +360,7 @@ function joinSession(peerId) {
         });
 
         // Visibly close the connection and empty the variable
-        connection.on('close', function() {
+        connection.on('close', function () {
             connection = {};
             pasteDiv.firstElementChild.textContent = 'Paste ID';
             pasteDiv.firstElementChild.className = '';

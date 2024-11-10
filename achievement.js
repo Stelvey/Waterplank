@@ -1,4 +1,4 @@
-// https://codepen.io/uenify/pen/KxzKVd
+// A very slightly modified https://codepen.io/uenify/pen/KxzKVd
 
 let achievementSound = new Audio('https://dl.dropboxusercontent.com/s/8qvrpd69ua7wio8/XboxAchievement.mp3')
 let achievementSoundRare = new Audio('https://dl.dropboxusercontent.com/s/po1udpov43am81i/XboxOneRareAchievement.mp3')
